@@ -1,24 +1,18 @@
 import streamlit as st
 from streamlit_chat import message
-import json
-import openai
 from datetime import datetime
-from  gpt_index import  GPTListIndex, GPTSimpleVectorIndex
-import sys
+from gpt_index import GPTSimpleVectorIndex
+import openai
 import os
 from dotenv import load_dotenv
-load_dotenv()
-#from gpt_index import SimpleDirectoryReader, GPTListIndex, GPTSimpleVectorIndex, LLMPredictor, PromptHelper
 from langchain import OpenAI
 
+load_dotenv()
 
 st.markdown("<h1 style='text-align: center; color: Blue;'>Plant Disease Classification Chat-Bot👋</h1>", unsafe_allow_html=True)
-api_key_input = st.text_input("Enter your OpenAI API key:", key="api_key_input")
-api_key = st.session_state.api_key_input
 
-openai.api_key = api_key
-
-
+api_key_input = st.text_input("Enter your OpenAI API key:")
+openai.api_key = api_key_input
 
 vector_index_path = "vectorIndex.json"
 
@@ -27,22 +21,12 @@ def get_bot_response(user_query):
     response = vIndex.query(user_query, response_mode="compact")
     return str(response)
 
-def answerMe(vectorIndex):
-  vIndex = GPTSimpleVectorIndex.load_from_disk(vectorIndex)
-  while True:
-    prompt = input("Please ask: ")
-    if prompt == "exit":
-      break
-    response = vIndex.query(prompt, response_mode="compact")
-    print(f"Response: {response} \n")
-
 def display_messages(all_messages):
     for idx, msg in enumerate(all_messages):
         if msg['user'] == 'user':
             message(f"You ({msg['time']}): {msg['text']}", is_user=True, key=f"user-{idx}")
         else:
             message(f"Bot ({msg['time']}): {msg['text']}", key=f"bot-{idx}")
-
 
 def send_message(user_query, all_messages):
     if user_query:
@@ -53,7 +37,6 @@ def send_message(user_query, all_messages):
 
         st.session_state.all_messages = all_messages
         display_messages(all_messages)
-
 
 if 'all_messages' not in st.session_state:
     st.session_state.all_messages = []
