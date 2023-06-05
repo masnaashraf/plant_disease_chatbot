@@ -10,9 +10,15 @@ from dotenv import load_dotenv
 load_dotenv()
 #from gpt_index import SimpleDirectoryReader, GPTListIndex, GPTSimpleVectorIndex, LLMPredictor, PromptHelper
 from langchain import OpenAI
-openai.api_key = os.environ["OPENAI_API_KEY"]
+
 
 st.markdown("<h1 style='text-align: center; color: Blue;'>Plant Disease Classification Chat-Bot👋</h1>", unsafe_allow_html=True)
+api_key_input = st.text_input("Enter your OpenAI API key:", key="api_key_input")
+api_key = st.session_state.api_key_input
+
+openai.api_key = api_key
+
+
 
 vector_index_path = "vectorIndex.json"
 
