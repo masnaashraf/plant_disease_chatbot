@@ -1,7 +1,7 @@
 import streamlit as st
 from streamlit_chat import message
 from datetime import datetime
-from gpt_index import GPTSimpleVectorIndex
+from gpt_index import GPTSimpleVectorIndex,LLMPredictor
 import openai
 import os
 from dotenv import load_dotenv
@@ -11,9 +11,10 @@ load_dotenv()
 
 st.markdown("<h1 style='text-align: center; color: Blue;'>Plant Disease Classification Chat-Bot👋</h1>", unsafe_allow_html=True)
 
+
 api_key_input = st.text_input("Enter your OpenAI API key:")
 openai.api_key = api_key_input
-
+llmPredictor = LLMPredictor(llm=OpenAI(temperature=0, model_name="gpt-3.5-turbo"))
 vector_index_path = "vectorIndex.json"
 
 def get_bot_response(user_query):
