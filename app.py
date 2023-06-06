@@ -5,25 +5,17 @@ from gpt_index import GPTSimpleVectorIndex, LLMPredictor
 import os
 from dotenv import load_dotenv
 from langchain import OpenAI
-from modules.utils import Utilities
 
 load_dotenv()
 
 st.markdown("<h1 style='text-align: center; color: Blue;'>Plant Disease Classification Chat-Bot👋</h1>", unsafe_allow_html=True)
 
-utils = Utilities()
-
-user_api_key = utils.load_api_key()
-
-if not user_api_key:
-    st.write("Please provide your OpenAI API key to communicate with chat bot.")
-    st.stop()
-else:
-    os.environ["OPENAI_API_KEY"] = user_api_key
+user_api_key = st.text_input("Enter your OpenAI API key:")
+os.environ["OPENAI_API_KEY"] = user_api_key
 
 vector_index_path = "vectorIndex.json"
 
-llmPredictor = LLMPredictor(llm=OpenAI(temperature=0, model_name="gpt-3.5-turbo", openai_api_key=os.environ["OPENAI_API_KEY"]))
+llmPredictor = LLMPredictor(llm=OpenAI(temperature=0, model_name="gpt-3.5-turbo", api_key=user_api_key))
 
 def get_bot_response(user_query):
     vIndex = GPTSimpleVectorIndex.load_from_disk(vector_index_path)
