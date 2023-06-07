@@ -49,7 +49,7 @@ def send_message(user_query, all_messages):
 
 if 'all_messages' not in st.session_state:
     st.session_state.all_messages = []
-
+st.header(":blue[Please start conversion with plant chat bot regarding the plant disease!]:sunglasses:")
 user_query = st.text_input("You: ", "", key="input")
 send_button = st.button("Send")
 
